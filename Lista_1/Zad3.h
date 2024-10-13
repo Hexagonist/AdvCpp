@@ -10,14 +10,13 @@ namespace cpplab{
     class vector
     {
         public:
-            // vector() = default;
+            // Default constructor without memory allocation
             vector() : maxSize(10), size(0), begin(nullptr)
             {
-                std::cout<<"Obj created!"<<std::endl;
+                // std::cout<<"Obj created!"<<std::endl;
             }
 
             vector(T&& val)
-            // Dać new i zaalokować od razu do maksymalnego rozmiaru
             {
                 begin = new T[maxSize];
                 // begin = new T(val);
@@ -29,57 +28,32 @@ namespace cpplab{
                 // std::cout<<"value_type = "<<value_type.name()<<std::endl;
             }
 
-
-            // vector(T&& other[])
-            // {
-                
-            // }
-
+            // [] Operator overloading to acquire element of vector
             T& operator[](int a)
             {
                 return begin[a];
             }
-            
-            // T operator*(std::vector<T> &standard_vec)
-            // {
-            //     T product = 0;
-            //     size_t size = 0;
 
-            //     // Do wprowadzenia error różnych rozmiarow
-
-            //     size = standard_vec.size();
-            //     for(size_t i = 0; i < size; i++)
-            //     {
-            //         product += this->begin[i] * standard_vec[i];
-            //     }
-            //     return product;
-            // }
-
+            // Method to append new element at the end of the vector 
             void push_back(T&& val)
             {
-                if(this->begin == nullptr)
+                // Memory allocation if begin pointer doesn't "exist" yet
+                if(begin == nullptr)
                 {
                     begin = new T[maxSize];
                     maxSize = 10;
                     size = 0;
-                    // begin = new T(val);
-                    // *begin = val;
-                    // value_type = typeid(val);
-                    // std::cout<<"*Begin = "<<*begin<<std::endl;
-                    // std::cout<<"value_type = "<<value_type.name()<<std::endl;
                 }
 
-                if(this->size < this->maxSize)
+                if(size < maxSize)
                 {
-                    std::cout<<"Pushing back: "<<val<<"\n";
+                    // std::cout<<"Pushing back: "<<val<<"\n";
                     begin[size] = val;
                     size++;
-                    // std::cout<<"  "<<"\n";
-
                 }
             }
 
-
+            // Method to delete element at the end of the vector 
             void pop_back()
             {
                 if(this->size > 0)
@@ -92,13 +66,14 @@ namespace cpplab{
                 }
             }
 
+            // Method to get current size of the vector 
             size_t get_size() const
             {
                 return this->size;
             }
 
 
-
+            // Destructor of the vector 
             ~vector()
             {
                 delete[] begin;
@@ -107,14 +82,14 @@ namespace cpplab{
 
             
         private:
-            size_t maxSize;
-            size_t size;
-            // std::type_info value_type;
-            T* begin;
-            using value_type = T;
+            size_t maxSize; // Max size of vector
+            size_t size; // Current size of vector
+            T* begin; // Pointer to first element of the vector
+            using value_type = T; // Type of vector elements
     };
 
     template<typename T> 
+    // * operator overloading for cpp::vector and std::vector
     T operator*(vector<T>& my_vec, std::vector<T>& standard_vec)
     {
             T product = 0;
@@ -131,13 +106,12 @@ namespace cpplab{
     }
 
     template<typename T> 
+    // * operator overloading for 
+    // std::vector and cpp::vector using template defined above
     T operator*(std::vector<T>& standard_vec, vector<T>& my_vec)
     {
             return my_vec * standard_vec;
     }
-
-    
-
 
 };
 
