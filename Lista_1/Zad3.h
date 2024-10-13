@@ -9,21 +9,10 @@ namespace cpplab{
     template<typename T> 
     class vector
     {
-        
-        private:
-            size_t maxSize;
-            size_t size;
-            // std::type_info value_type;
-            T* begin;
-            // value_type;
-
         public:
             // vector() = default;
-            vector()
+            vector() : maxSize(10), size(0), begin(nullptr)
             {
-                maxSize = 10;
-                size = 0;
-                begin = nullptr;
                 std::cout<<"Obj created!"<<std::endl;
             }
 
@@ -51,20 +40,20 @@ namespace cpplab{
                 return begin[a];
             }
             
-            T operator*(std::vector<T> &standard_vec)
-            {
-                T product = 0;
-                size_t size = 0;
+            // T operator*(std::vector<T> &standard_vec)
+            // {
+            //     T product = 0;
+            //     size_t size = 0;
 
-                // Do wprowadzenia error różnych rozmiarow
+            //     // Do wprowadzenia error różnych rozmiarow
 
-                size = standard_vec.size();
-                for(size_t i = 0; i < size; i++)
-                {
-                    product += this->begin[i] * standard_vec[i];
-                }
-                return product;
-            }
+            //     size = standard_vec.size();
+            //     for(size_t i = 0; i < size; i++)
+            //     {
+            //         product += this->begin[i] * standard_vec[i];
+            //     }
+            //     return product;
+            // }
 
             void push_back(T&& val)
             {
@@ -116,8 +105,38 @@ namespace cpplab{
                 std::cout<<"Obj destroyed!\n";
             }
 
-
+            
+        private:
+            size_t maxSize;
+            size_t size;
+            // std::type_info value_type;
+            T* begin;
+            using value_type = T;
     };
+
+    template<typename T> 
+    T operator*(vector<T>& my_vec, std::vector<T>& standard_vec)
+    {
+            T product = 0;
+            size_t size = 0;
+
+            // Do wprowadzenia error różnych rozmiarow
+
+            size = standard_vec.size();
+            for(size_t i = 0; i < size; i++)
+            {
+                product += my_vec[i] * standard_vec[i];
+            }
+            return product;
+    }
+
+    template<typename T> 
+    T operator*(std::vector<T>& standard_vec, vector<T>& my_vec)
+    {
+            return my_vec * standard_vec;
+    }
+
+    
 
 
 };

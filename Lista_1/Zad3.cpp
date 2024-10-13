@@ -29,8 +29,10 @@ int main()
 	my_vec.push_back(2);
 	my_vec.push_back(3);
 	int result = my_vec * standard_vector;
-	// int result_2 = standard_vector * my_vec;
 	std::cout<<"result of multiplification: "<<result<<std::endl;
+	
+	int result_2 = standard_vector * my_vec;
+	std::cout<<"result of multiplification #2: "<<result_2<<std::endl;
 
 
 
