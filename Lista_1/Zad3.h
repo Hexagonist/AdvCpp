@@ -1,6 +1,8 @@
 
 #pragma once
 #include <iostream>
+#include <vector>
+#include <string>
 
 
 namespace cpplab{
@@ -13,7 +15,7 @@ namespace cpplab{
             size_t size;
             // std::type_info value_type;
             T* begin;
-
+            // value_type;
 
         public:
             // vector() = default;
@@ -49,15 +51,18 @@ namespace cpplab{
                 return begin[a];
             }
             
-            double operator*(cpplab::vector<T> &vec1, cpplab::vector<T> &vec2)
+            T operator*(std::vector<T> &standard_vec)
             {
-                double product = 0;
-                // size_t size = 0;
-                // size = (vec1.get_size() > vec2.get_size()) ? vec1.get_size() : vec2.get_size();
-                // for(size_t i = 0; i < size; i++)
-                // {
-                //     product += vec1[i] * vec2[i];
-                // }
+                T product = 0;
+                size_t size = 0;
+
+                // Do wprowadzenia error różnych rozmiarow
+
+                size = standard_vec.size();
+                for(size_t i = 0; i < size; i++)
+                {
+                    product += this->begin[i] * standard_vec[i];
+                }
                 return product;
             }
 
@@ -98,7 +103,7 @@ namespace cpplab{
                 }
             }
 
-            size_t get_size()
+            size_t get_size() const
             {
                 return this->size;
             }
