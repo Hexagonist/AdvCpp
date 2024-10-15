@@ -23,7 +23,7 @@ namespace cpplab{
             }
 
             // Method to append new element at the end of the vector 
-            void push_back(T&& val)
+            void push_back(T val)
             {
                 // Memory allocation if begin pointer doesn't "exist" yet
                 if(begin == nullptr)

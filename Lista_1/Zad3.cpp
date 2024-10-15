@@ -58,6 +58,13 @@ int main()
 	my_vec_chars.push_back('d');
 	std::cout<<"my_vec_chars : "<<my_vec_chars<<"\n";
 
+	// Test for strings
+	cpplab::vector<std::string> my_vec_strings;
+	my_vec_strings.push_back("ala");
+	my_vec_strings.push_back("ma");
+	my_vec_strings.push_back("kota");
+	std::cout<<"my_vec_strings : "<<my_vec_strings<<"\n";
+
 
 	return 0;
 }
