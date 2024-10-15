@@ -1,9 +1,9 @@
-
 #pragma once
 #include <iostream>
 #include <vector>
 #include <string>
 
+// Mateusz Wójcicki ISSP sem 5; grupa czwartek 15:15
 
 namespace cpplab{
     template<typename T> 
@@ -28,13 +28,10 @@ namespace cpplab{
                 // Memory allocation if begin pointer doesn't "exist" yet
                 if(begin == nullptr)
                 {
-                    // begin = new T[1];
-                    // maxSize = 1;
-                    // size = 0;
                     resize(1);
                     begin[0] = val;
                     size++;
-                    std::cout<<"begin==nullptr\n";
+                    // std::cout<<"begin==nullptr\n";
                 }
 
                 else if(size < maxSize)
@@ -42,14 +39,14 @@ namespace cpplab{
                     // std::cout<<"Pushing back: "<<val<<"\n";
                     begin[size] = val;
                     size++;
-                    std::cout<<"size<\n";
+                    // std::cout<<"size<\n";
                 }
                 else if (size == maxSize)
                 {
                     resize(maxSize + 1);
                     begin[size] = val;
                     size++;
-                    std::cout<<"size==\n";
+                    // std::cout<<"size==\n";
                 }
                 else 
                 {
@@ -69,7 +66,7 @@ namespace cpplab{
                 }
             }
 
-            // Creating new, bigger vector and coping previous 
+            // Method to create new, bigger vector and copy previous 
             // content into the new one 
             void resize(size_t count)
             {
@@ -94,12 +91,11 @@ namespace cpplab{
                 return size;
             }
 
-
             // Destructor of the vector 
             ~vector()
             {
                 delete[] begin;
-                std::cout<<"Obj destroyed!\n";
+                std::cout<<"cpplab::vector destroyed!\n";
             }
 
             

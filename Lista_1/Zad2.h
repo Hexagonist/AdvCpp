@@ -3,6 +3,7 @@
 #include <algorithm>
 #include <vector>
 
+// Mateusz Wójcicki ISSP sem 5; grupa czwartek 15:15
 
 template<typename T>
 auto insertion_sort(std::vector<T>& vec)

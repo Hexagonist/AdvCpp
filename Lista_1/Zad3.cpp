@@ -1,5 +1,6 @@
 #include "Zad3.h"
 
+// Mateusz Wójcicki ISSP sem 5; grupa czwartek 15:15
 
 int main() 
 {
