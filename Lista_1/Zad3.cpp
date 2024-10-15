@@ -28,11 +28,21 @@ int main()
 	my_vec.push_back(1);
 	my_vec.push_back(2);
 	my_vec.push_back(3);
+
+	std::cout<<my_vec.get_size()<<std::endl;
+	for(size_t i = 0; i < my_vec.get_size(); i++)
+	{
+		std::cout<<"my_vec["<<i<<"] : "<<my_vec[i]<<std::endl;
+	}
+
 	int result = my_vec * standard_vector;
 	std::cout<<"result of multiplification: "<<result<<std::endl;
 	
 	int result_2 = standard_vector * my_vec;
 	std::cout<<"result of multiplification #2: "<<result_2<<std::endl;
+
+	my_vec[0] = 99;
+	std::cout<<my_vec[0]<<std::endl;
 
 
 
