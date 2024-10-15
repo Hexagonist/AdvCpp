@@ -39,5 +39,25 @@ int main()
 	int result_2 = standard_vector * my_vec_2;
 	std::cout<<"result of multiplification #2: "<<result_2<<std::endl;
 
+
+	// Test for floats
+	cpplab::vector<float> my_vec_floats;
+
+	// Appending new elements to vector
+	my_vec_floats.push_back(1.5f);
+	my_vec_floats.push_back(2.5f);
+	my_vec_floats.push_back(3.8f);
+	std::cout<<"\nmy_vec_floats : "<<my_vec_floats<<"\n";
+
+	// Test for chars
+	cpplab::vector<char> my_vec_chars;
+
+	// Appending new elements to vector
+	my_vec_chars.push_back('a');
+	my_vec_chars.push_back('c');
+	my_vec_chars.push_back('d');
+	std::cout<<"my_vec_chars : "<<my_vec_chars<<"\n";
+
+
 	return 0;
 }
