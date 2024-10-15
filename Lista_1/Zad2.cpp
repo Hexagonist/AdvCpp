@@ -2,23 +2,42 @@
 
 // Mateusz Wójcicki ISSP sem 5; grupa czwartek 15:15
 
+
 int main() {
 
-	std::cout << "test\n";
+	std::cout << "Lista 1 Zad 2:\n";
 
+    // Testing ints
     std::vector<int> vec1({2, 4, 3, 4, 2, 1});
+    std::cout<<"\nvector_1 before sorting: ";
+    print_vector(vec1);
 
-    for (auto a : vec1)
-    {
-        std::cout<<a<<std::endl;
-    }
-
-    std::cout<<std::endl;
     insertion_sort(vec1);
+    std::cout<<"vector_1 after insertion sort: ";
+    print_vector(vec1);
 
-    for (auto a : vec1)
-    {
-        std::cout<<a<<std::endl;
-    }
+
+    // Floats test
+    std::vector<float> vec2({1.3f, 0.3f, 4.5f, 0.3f, 34.6f});
+    std::cout<<"\nvector_2 before sorting: ";
+    print_vector(vec2);
+
+    insertion_sort(vec2);
+    std::cout<<"vector_2 after insertion sort: ";
+    print_vector(vec2);
+
+
+    // Chars test
+    std::vector<char> vec3({'b', 'c', 'a', 'b', 'd'});
+    std::cout<<"\nvector_3 before sorting: ";
+    print_vector(vec3);
+
+    insertion_sort(vec3);
+    std::cout<<"vector_3 after insertion sort: ";
+    print_vector(vec3);
+
+
+
+
 	return 0;
 }
