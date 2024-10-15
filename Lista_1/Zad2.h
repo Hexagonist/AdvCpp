@@ -23,6 +23,7 @@ auto insertion_sort(std::vector<T>& vec)
 	return vec;
 }
 
+// Only to print vector in comfortable way
 template<typename T>
 void print_vector(std::vector<T>& vec)
 {

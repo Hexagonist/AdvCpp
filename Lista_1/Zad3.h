@@ -59,10 +59,10 @@ namespace cpplab{
             {
                 if(size > 0)
                 {
-                    std::cout<<"Poping back"<<"\n";
+                    // std::cout<<"Poping back"<<"\n";
                     size--;
                     begin[size] = 0;
-                    std::cout<<"Popped val =  "<<begin[size]<<"\n";
+                    // std::cout<<"Popped val =  "<<begin[size]<<"\n";
                 }
             }
 
@@ -95,7 +95,7 @@ namespace cpplab{
             ~vector()
             {
                 delete[] begin;
-                std::cout<<"cpplab::vector destroyed!\n";
+                // std::cout<<"cpplab::vector destroyed!\n";
             }
 
             
@@ -106,10 +106,12 @@ namespace cpplab{
             using value_type = T; // Type of vector elements
     };
 
-    template<typename T> 
     // * operator overloading for cpp::vector and std::vector
+    template<typename T> 
     T operator*(vector<T>& my_vec, std::vector<T>& standard_vec)
     {
+        if(my_vec.get_size() == standard_vec.size())
+        {
             T product = 0;
             size_t size = 0;
 
@@ -121,16 +123,44 @@ namespace cpplab{
                 product += my_vec[i] * standard_vec[i];
             }
             return product;
+        }
+        else{std::cout<<"Vectors are not the same size!\n";}
     }
 
-    template<typename T> 
     // * operator overloading for 
-    // std::vector and cpp::vector using template defined above
+    // std::vector and cpplab::vector using template defined above
+    template<typename T> 
     T operator*(std::vector<T>& standard_vec, vector<T>& my_vec)
     {
         return my_vec * standard_vec;
     }
 
+    
+
+
+
 };
+
+// Only to print cpplab::vector in comfortable way
+template<typename T>
+std::ostream& operator<<(std::ostream& os, const cpplab::vector<T>& vec)
+{
+    for (size_t i = 0; i < vec.get_size(); i++)
+    {
+        os << vec[i] << " ";
+    }
+    return os;
+}
+
+// Only to print std::vector in comfortable way
+template<typename T>
+std::ostream& operator<<(std::ostream& os, const std::vector<T>& vec)
+{
+    for (T a : vec)
+    {
+        os << a << " ";
+    }
+    return os;
+}
 
 
