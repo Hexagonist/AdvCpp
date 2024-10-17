@@ -6,7 +6,7 @@
 // Mateusz Wójcicki ISSP sem 5; grupa czwartek 15:15
 
 template<typename T>
-auto insertion_sort(std::vector<T>& vec)
+void insertion_sort(std::vector<T>& vec)
 {
     for(size_t i = 1; i < vec.size(); i++)
     {
@@ -20,7 +20,6 @@ auto insertion_sort(std::vector<T>& vec)
             }
         }
     }
-	return vec;
 }
 
 // Only to print vector in comfortable way
