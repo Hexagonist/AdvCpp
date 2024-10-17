@@ -1,40 +1,69 @@
 #include "Zad3.h"
 
+// Mateusz Wójcicki ISSP sem 5; grupa czwartek 15:15
 
 int main() 
 {
-	// cpplab::vector<int> test;
-	// test.push_back(12);
-	// test.push_back(14);
-	// std::cout<<test[0]<<"\n"<<test[1]<<"\n"<<test[2]<<std::endl;
+	cpplab::vector<int> my_vec_1;
 
-	// test[0]=11;
-	// std::cout<<"Modified first el to 11: "<<test[0]<<std::endl;
+	// Appending new elements to vector
+	my_vec_1.push_back(12);
+	my_vec_1.push_back(14);
+	my_vec_1.push_back(16);
+	std::cout<<"my_vec_1 : "<<my_vec_1<<"\n";
 
-	// test.pop_back();
-	// std::cout<<test[0]<<"\n"<<test[1]<<"\n"<<test[2]<<std::endl;
+	// Last element deleted
+	my_vec_1.pop_back();
+	std::cout<<"my_vec_1 after last element deleted : "<<my_vec_1<<"\n";
 
-	// std::cout<<"size = "<< test.get_size()<<std::endl;
+	// First element modified to 11
+	my_vec_1[0]=11;
+	std::cout<<"my_vec_1 after change of first : "<<my_vec_1<<"\n";
 
+
+
+	// Testing scalar multiplication
 	std::vector<int> standard_vector({2, 3, 4});
+	cpplab::vector<int> my_vec_2;
+	my_vec_2.push_back(1);
+	my_vec_2.push_back(2);
+	my_vec_2.push_back(3);
 
-	for(auto i = 0; i < standard_vector.size(); i++)
-	{
-		std::cout<<"standard vector ["<<i<<"] : "<<standard_vector[i]<<std::endl;
-	}
+	std::cout<<"\nScalar multiplication of: \n";
+	std::cout<<"Standard vector: "<<standard_vector<<"\nand\n";
+	std::cout<<"Cpplab vector: "<<my_vec_2<<"\n";
 
-
-	cpplab::vector<int> my_vec;
-	my_vec.push_back(1);
-	my_vec.push_back(2);
-	my_vec.push_back(3);
-	int result = my_vec * standard_vector;
-	std::cout<<"result of multiplification: "<<result<<std::endl;
+	int result = my_vec_2 * standard_vector;
+	std::cout<<"\nresult of multiplification #1: "<<result<<std::endl;
 	
-	int result_2 = standard_vector * my_vec;
+	int result_2 = standard_vector * my_vec_2;
 	std::cout<<"result of multiplification #2: "<<result_2<<std::endl;
 
 
+	// Test for floats
+	cpplab::vector<float> my_vec_floats;
+
+	// Appending new elements to vector
+	my_vec_floats.push_back(1.5f);
+	my_vec_floats.push_back(2.5f);
+	my_vec_floats.push_back(3.8f);
+	std::cout<<"\nmy_vec_floats : "<<my_vec_floats<<"\n";
+
+	// Test for chars
+	cpplab::vector<char> my_vec_chars;
+
+	// Appending new elements to vector
+	my_vec_chars.push_back('a');
+	my_vec_chars.push_back('c');
+	my_vec_chars.push_back('d');
+	std::cout<<"my_vec_chars : "<<my_vec_chars<<"\n";
+
+	// Test for strings
+	cpplab::vector<std::string> my_vec_strings;
+	my_vec_strings.push_back("ala");
+	my_vec_strings.push_back("ma");
+	my_vec_strings.push_back("kota");
+	std::cout<<"my_vec_strings : "<<my_vec_strings<<"\n";
 
 
 	return 0;

@@ -2,15 +2,11 @@
 #include <iostream>
 #include <algorithm>
 
+// Mateusz Wójcicki ISSP sem 5; grupa czwartek 15:15
 
-// template <T a, T c, C comp>
-// void my_max(a* aa, c* cc)
-// {
-// 	return std::max(aa, cc);
-// }
 
 template<typename T, typename C>
-auto my_max(T a, T c, C comp)
+auto my_max(T a, T b, C comp)
 {
-	return comp(a, c);
+	return comp(a, b);
 }
