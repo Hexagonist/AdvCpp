@@ -2,15 +2,15 @@
 #include <iostream>
 #include <algorithm>
 #include <vector>
-#include <string>
 
+// Mateusz Wójcicki ISSP sem 5; grupa czwartek 15:15
 
 template<typename T>
-auto insertion_sort(std::vector<T>& vec)
+void insertion_sort(std::vector<T>& vec)
 {
-    for(int i = 1; i < vec.size(); i++)
+    for(size_t i = 1; i < vec.size(); i++)
     {
-        for(int j = 0; j < i; j++)
+        for(size_t j = 0; j < i; j++)
         {
             if(vec[i] < vec[j])   
             {
@@ -20,5 +20,35 @@ auto insertion_sort(std::vector<T>& vec)
             }
         }
     }
-	return vec;
+}
+
+template<>
+void insertion_sort<std::string>(std::vector<std::string>& vec_str)
+{
+    for(size_t i = 1; i < vec_str.size(); i++)
+    {
+        for(size_t j = 0; j < i; j++)
+        {
+            if(vec_str[i] < vec_str[j])   
+            {
+                T temp = vec_str[i];
+                vec_str[i] = vec_str[j];
+                vec_str[j] = temp;
+            }
+        }
+    }
+}
+
+
+
+
+// Only to print vector in comfortable way
+template<typename T>
+void print_vector(std::vector<T>& vec)
+{
+    for (T a : vec)
+    {
+        std::cout<<a<<" ";
+    }
+    std::cout<<std::endl;
 }
