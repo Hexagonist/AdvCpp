@@ -3,11 +3,7 @@
 
 constexpr int fac(int n)
 {
-    int result = 0;
-    if(n>2) result = n*fac(n-1);
-    else result = n*(n-1);
-
-    return result;
+    return n <= 1 ? 1 : (n * fac(n - 1));
 }
 
 
