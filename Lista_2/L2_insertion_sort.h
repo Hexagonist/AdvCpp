@@ -25,6 +25,7 @@ void insertion_sort(std::vector<T>& vec)
 template<>
 void insertion_sort<std::string>(std::vector<std::string>& vec_str)
 {
+    std::cout<<"Dziala\n";
     for(size_t i = 1; i < vec_str.size(); i++)
     {
         for(size_t j = 0; j < i; j++)
@@ -44,7 +45,6 @@ void insertion_sort<std::string>(std::vector<std::string>& vec_str)
            for(size_t k = 0; k < len; k++)
            {
             
-
            }
 
             // if(vec_str[i] < vec_str[j])   

@@ -1,5 +1,6 @@
 #include "L2_insertion_sort.h"
 
+// Mateusz Wójcicki ISSP sem 5; grupa czwartek 15:15
 
 int main()
 {
