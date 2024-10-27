@@ -14,15 +14,15 @@ int main()
     std::vector<std::string> vec_str_5 = {"ab1c","a"};
     std::vector<std::string> vec_str_6 = {"ab1c","a", "ab"};
 
-    std::cout<<"\nvec3: \n";
-    print_vector(vec_str_3);
-    insertion_sort(vec_str_3);
-    print_vector(vec_str_3);
+    // std::cout<<"\nvec3: \n";
+    // print_vector(vec_str_3);
+    // insertion_sort(vec_str_3);
+    // print_vector(vec_str_3);
 
-    // std::cout<<"\nvec4: \n";
-    // print_vector(vec_str_4);
-    // insertion_sort(vec_str_4);
-    // print_vector(vec_str_4);
+    std::cout<<"\nvec4: \n";
+    print_vector(vec_str_4);
+    insertion_sort(vec_str_4);
+    print_vector(vec_str_4);
 
     // std::cout<<"\nvec5: \n";
     // print_vector(vec_str_5);

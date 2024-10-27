@@ -69,7 +69,7 @@ void insertion_sort<std::string>(std::vector<std::string>& vec_str)
 
                 std::cout<<"Liczba 1: "<<i_first<<" "<<"Liczba 2: "<<i_second<<"\n";
                 result = i_first > i_second;
-                i = lenght;
+                if(i_first != i_second) i = lenght;
             }
             else if(str1[i] != str2[i])
             {
