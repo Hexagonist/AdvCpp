@@ -22,6 +22,7 @@ int main() {
     res += '8';
 
     cout << "test:  " << res << endl;
+    cout << "test:  " << ('a' > 'b') << endl;
 
 
     return 0;

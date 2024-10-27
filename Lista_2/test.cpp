@@ -12,11 +12,6 @@
 
 int main()
 {   
-
-    // auto struktura = test();
-
-    // std::cout<<"test: "<<struktura.value<<"\n";
-
     auto lambda = [](std::string str1, std::string str2)
     {
         size_t lenght;
@@ -29,9 +24,9 @@ int main()
         {
             unsigned int i_first = 0;
             unsigned int i_second = 0;
-            bool found = false;
+            // bool found = false;
 
-            if(std::isdigit(str1[i]))
+            if(std::isdigit(str1[i]) && std::isdigit(str2[i]))
             {
                 int j = 0;
                 std::string temp = "";
@@ -40,6 +35,16 @@ int main()
                     temp += str1[i+j];
                     j++;
                 }
+                i_first = std::stoi(temp);
+
+                j = 0;
+                temp = "";
+                while(std::isdigit(str2[i+j]))
+                {
+                    temp += str2[i+j];
+                    j++;
+                }
+                i_second = std::stoi(temp);
 
                 // while(std::isdigit(str1[i+j]))    j++;
                 // int k = 0;
@@ -54,14 +59,17 @@ int main()
                 //     k++;
                 // }
 
-                i_first = std::stoi(temp);
-                std::cout<<"String 1: "<<i_first<<" "<<"String 2: "<<str2[i]<<"\n";
+                std::cout<<"String 1: "<<i_first<<" "<<"String 2: "<<i_second<<"\n";
                 i = lenght;
+
+                return i_first > i_second ? true : false;
             }
             else if(str1[i] != str2[i])
             {
                 std::cout<<"String 1: "<<str1[i]<<" "<<"String 2: "<<str2[i]<<"\n";
+                // Zwraca tru albo false w zależności od porównywanych charów
                 i = lenght;
+                return str1[i] > str2[i];
             }
         }
     };
@@ -72,7 +80,8 @@ int main()
     std::string string3 = "1abc";
     std::string string4 = "10abc";
 
-    lambda(string1, string2);
+    std::cout<<lambda(string1, string2)<<"\n";
+    std::cout<<lambda(string3, string4)<<"\n";
 
     return 0;
 }
