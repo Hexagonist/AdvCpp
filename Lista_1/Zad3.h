@@ -26,7 +26,8 @@ namespace cpplab{
             void push_back(T val)
             {
                 // Memory allocation if begin pointer doesn't "exist" yet
-                if(begin == nullptr)
+                if(begin == nullptr)// Sprawdzić is_empty i poprawnie zaimplementować (nullptr prawdopodobnie może nie wystarczyć
+                //  może być np samo null) 
                 {
                     resize(1);
                     begin[0] = val;

@@ -1,6 +1,7 @@
 #include "Zad1.h"
 
 // Mateusz Wójcicki ISSP sem 5; grupa czwartek 15:15
+// https://godbolt.org/ dobra strona
 
 int main() {
 
