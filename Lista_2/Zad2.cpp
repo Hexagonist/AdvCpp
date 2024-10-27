@@ -20,9 +20,10 @@ int main()
     // std::cout<<"4! = "<<fac_4<<"\n";
     // std::cout<<"5! = "<<fac_5<<"\n";
 
-    constexpr int test = Factorial<4>::value;
+    constexpr int test = Factorial<4>().get_value();
 
     std::cout<<"4! = "<<test<<"\n";
+
 
 
     return 0;

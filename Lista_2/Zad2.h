@@ -9,13 +9,27 @@
 // };
 
 template <int N>
-struct Factorial 
+class Factorial 
 {
-  enum { value = N * Factorial<N-1>::value };
+  // constexpr int value = N * Factorial<N-1>::value;
+  public:
+  // Function during compilation time calculates recursively factorial of given N value and returns result
+  constexpr int get_value()
+  {
+    return N * Factorial<N-1>().get_value();
+  }
+  private:
+  // constexpr int value = ;
 };
  
 template <>
-struct Factorial<0> 
+class Factorial<0> 
 {
-  enum { value = 1 } ;
+  public:
+  constexpr int get_value()
+  {
+    return 1;
+  }
+  private:
+  // int value = 1;
 };
