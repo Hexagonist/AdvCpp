@@ -2,21 +2,12 @@
 
 #include <iostream>
 
-// Funkcja końcowa dla przypadku bez argumentów (przerywa rekurencję)
-
+// Final function to stop recursion in case of 0 arguments
 void print_all() {
-    std::cout <<"end of args"<< std::endl;
+    std::cout <<"No arguments were given"<< std::endl;
 }
-// Funkcja rekurencyjna dla przypadku, gdy >1 argumentów (dziala)
-// template <typename First, typename... Rest>
-// void print_all(First first, Rest... rest) {
-//     std::cout << first << " ";
-    
-//     print_all(rest...); 
-// }
 
-// Funkcja rekurencyjna dla przypadku, gdy >1 argumentów
-// Function prints all of arguments recursively
+// Function prints all of arguments recursively in case >0 arguments given
 template <typename First, typename... Rest>
 void print_all(First first, Rest... rest) {
     std::cout << first << " ";
@@ -25,12 +16,4 @@ void print_all(First first, Rest... rest) {
     {
         print_all(rest...);
     }
-
-    // for(size_t i = 0; i < sizeof...(rest); i++)
-    // {
-    //     (std::cout << ... << rest) << " ";
-    // }; 
-
-    // std::cout << sizeof...(rest) << " ";
-
 }
