@@ -1,5 +1,4 @@
 #pragma once
-
 #include <iostream>
 
 // Final function to stop recursion in case of 0 arguments
