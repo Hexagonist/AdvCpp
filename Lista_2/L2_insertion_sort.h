@@ -37,7 +37,7 @@ void insertion_sort<std::string>(std::vector<std::string>& vec_str)
              SPRAWDZAMY ktorymi sie roznia i porownujemy je
             */ 
 
-           // Choose shorter string length to compare strings
+           // Choose shorter string to compare
            size_t len = 0;
            if (vec_str[i].size() <= vec_str[j].size()) len = vec_str[i].size();
            else len = vec_str[j].size();

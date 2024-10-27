@@ -23,7 +23,7 @@ void print_all(First first, Rest... rest) {
     
     if(sizeof...(rest) > 0) 
     {
-        print_all(rest...); // Rekurencyjne wywołanie dla pozostałych argumentów
+        print_all(rest...);
     }
 
     // for(size_t i = 0; i < sizeof...(rest); i++)
