@@ -41,5 +41,10 @@ int main() {
     // wynosi O(n^2), ale dla już posortowanych elementów
     // złożoność wynosi O(n).
 
+    std::cout<<"\n\nOdpowiedź do Zadania 2:";
+    std::cout<<"\nZłożoność algorytmu insertion sort dla najgorszego przypadku";
+    std::cout<<"\nwynosi O(n^2), ale dla już posortowanych elementów";
+    std::cout<<"\nzłożoność wynosi O(n).\n";
+
 	return 0;
 }
