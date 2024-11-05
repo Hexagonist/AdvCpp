@@ -4,14 +4,13 @@
 #include <string>
 
 // Mateusz Wójcicki ISSP sem 5; grupa czwartek 15:15
-
 namespace cpplab{
     template<typename T> 
     class vector
     {
         public:
             // Default constructor without memory allocation
-            vector() : maxSize(0), size(0), begin(nullptr)
+            vector() : maxSize(0), _size(0), begin(nullptr)
             {
                 // std::cout<<"cpplab::vector created!"<<std::endl;
             }
@@ -26,44 +25,47 @@ namespace cpplab{
             void push_back(T val)
             {
                 // Memory allocation if begin pointer doesn't "exist" yet
-                if(begin == nullptr)// Sprawdzić is_empty i poprawnie zaimplementować (nullptr prawdopodobnie może nie wystarczyć
-                //  może być np samo null) 
+                if(empty())
                 {
                     resize(1);
                     begin[0] = val;
-                    size++;
+                    _size++;
                     // std::cout<<"begin==nullptr\n";
                 }
 
-                else if(size < maxSize)
+                else if(_size < maxSize)
                 {
                     // std::cout<<"Pushing back: "<<val<<"\n";
-                    begin[size] = val;
-                    size++;
-                    // std::cout<<"size<\n";
+                    begin[_size] = val;
+                    _size++;
+                    // std::cout<<"_size<\n";
                 }
-                else if (size == maxSize)
+                else if (_size == maxSize)
                 {
                     resize(maxSize + 1);
-                    begin[size] = val;
-                    size++;
-                    // std::cout<<"size==\n";
+                    begin[_size] = val;
+                    _size++;
+                    // std::cout<<"_size==\n";
                 }
                 else 
                 {
-                    std::cout<<"push_back error!\n";
+                    throw std::runtime_error("cpplab::vector push_back error!");
                 }
             }
 
             // Method to delete element at the end of the vector 
             void pop_back()
             {
-                if(size > 0)
+                if(_size > 0)
                 {
                     // std::cout<<"Poping back"<<"\n";
-                    size--;
-                    begin[size] = 0;
-                    // std::cout<<"Popped val =  "<<begin[size]<<"\n";
+                    _size--;
+                    begin[_size] = 0;
+                    // std::cout<<"Popped val =  "<<begin[_size]<<"\n";
+                }
+                else
+                {
+                    throw std::runtime_error("cpplab::vector pop_back error!");
                 }
             }
 
@@ -73,10 +75,14 @@ namespace cpplab{
             {
                 if(maxSize != count)
                 {
-                    maxSize = count;
+                    if(maxSize == 0)    maxSize = 2;
+                    else
+                    {
+                        while(maxSize < count) maxSize *= 2;
+                    }
 
-                    T* new_begin = new T[count];
-                    for(size_t i = 0; i < size; i++)
+                    T* new_begin = new T[maxSize];
+                    for(size_t i = 0; i < _size; i++)
                     {
                         new_begin[i] = begin[i];
                     }
@@ -86,10 +92,15 @@ namespace cpplab{
                 }
             }
 
-            // Method to get current size of the vector 
-            size_t get_size() const
+            // Method to get current _size of the vector 
+            size_t size() const
             {
-                return size;
+                return _size;
+            }
+
+            bool empty()
+            {
+                return _size == 0;
             }
 
             // Destructor of the vector 
@@ -102,51 +113,39 @@ namespace cpplab{
             
         private:
             size_t maxSize; // Max size of vector
-            size_t size; // Current size of vector
+            size_t _size; // Current size of vector
             T* begin; // Pointer to first element of the vector
             using value_type = T; // Type of vector elements
     };
 
     // * operator overloading for cpp::vector and std::vector
-    template<typename T> 
-    T operator*(vector<T>& my_vec, std::vector<T>& standard_vec)
+    template<typename T, typename U> 
+    auto operator*(T& L_type, U& R_type)
     {
-        if(my_vec.get_size() == standard_vec.size())
+        if(L_type.size() == R_type.size())
         {
-            T product = 0;
+            auto product = 0;
             size_t size = 0;
 
-            // Do wprowadzenia error różnych rozmiarow
-
-            size = standard_vec.size();
+            size = R_type.size();
             for(size_t i = 0; i < size; i++)
             {
-                product += my_vec[i] * standard_vec[i];
+                product += L_type[i] * R_type[i];
             }
             return product;
         }
-        else{std::cout<<"Vectors are not the same size!\n";}
+        else
+        {
+            throw std::runtime_error("Vectors must be the same size!");
+        }
     }
-
-    // * operator overloading for 
-    // std::vector and cpplab::vector using template defined above
-    template<typename T> 
-    T operator*(std::vector<T>& standard_vec, vector<T>& my_vec)
-    {
-        return my_vec * standard_vec;
-    }
-
-    
-
-
-
 };
 
 // Only to print cpplab::vector in comfortable way
 template<typename T>
 std::ostream& operator<<(std::ostream& os, const cpplab::vector<T>& vec)
 {
-    for (size_t i = 0; i < vec.get_size(); i++)
+    for (size_t i = 0; i < vec.size(); i++)
     {
         os << vec[i] << " ";
     }
