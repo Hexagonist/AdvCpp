@@ -25,8 +25,7 @@ namespace cpplab{
             void push_back(T val)
             {
                 // Memory allocation if begin pointer doesn't "exist" yet
-                if(begin == nullptr)// Sprawdzić is_empty i poprawnie zaimplementować (nullptr prawdopodobnie może nie wystarczyć
-                //  może być np samo null) 
+                if(empty())
                 {
                     resize(1);
                     begin[0] = val;
@@ -97,6 +96,11 @@ namespace cpplab{
             size_t size() const
             {
                 return _size;
+            }
+
+            bool empty()
+            {
+                return _size == 0;
             }
 
             // Destructor of the vector 
