@@ -4,6 +4,8 @@
 
 int main() 
 {
+	try
+	{
 	cpplab::vector<int> my_vec_1;
 
 	// Appending new elements to vector
@@ -21,6 +23,7 @@ int main()
 	std::cout<<"my_vec_1 after change of first : "<<my_vec_1<<"\n";
 
 
+	
 
 	// Testing scalar multiplication
 	std::vector<int> standard_vector({2, 3, 4});
@@ -64,6 +67,22 @@ int main()
 	my_vec_strings.push_back("ma");
 	my_vec_strings.push_back("kota");
 	std::cout<<"my_vec_strings : "<<my_vec_strings<<"\n";
+
+	// Exception test
+	// std::vector<int>test_vector({99});
+	// int result_3 = my_vec_2 * test_vector;
+	// std::cout<<"\nresult_3 of multiplification #1: "<<result_3<<std::endl;
+	// std::cout<<"\nresult_4 of multiplification #1: "<<my_vec_1<<std::endl;
+
+	}
+	catch(const std::exception& e)
+	{
+		std::cout << "Exception: " << e.what() << '\n';
+	}
+	catch(...)
+	{
+		std::cout << "Other Exception occured!" << '\n';
+	}
 
 
 	return 0;

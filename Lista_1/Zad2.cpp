@@ -36,8 +36,10 @@ int main() {
     std::cout<<"vector_3 after insertion sort: ";
     print_vector(vec3);
 
-
-
+    // Odpowiedź do Zadania 2:
+    // Złożoność algorytmu insertion sort dla najgorszego przypadku
+    // wynosi O(n^2), ale dla już posortowanych elementów
+    // złożoność wynosi O(n).
 
 	return 0;
 }
