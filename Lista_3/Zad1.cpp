@@ -2,6 +2,11 @@
 
 // Mateusz Wójcicki ISSP sem 5; grupa czwartek 15:15
 
+// Wymogi:
+// zeby byly liczbami zawartosci
+// size rowne
+// byly vectory
+
 int main() 
 {
 	try

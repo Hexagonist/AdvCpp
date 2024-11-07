@@ -2,7 +2,7 @@
 #include <vector>
 #include <string>
 #include <type_traits>
-// #include <concepts>
+#include <concepts>
 
 // Mateusz Wójcicki ISSP sem 5; grupa czwartek 15:15
 
