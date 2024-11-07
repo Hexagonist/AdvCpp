@@ -1,5 +1,5 @@
 # VScode
-*.json
+.vscode/
 
 # Prerequisites
 *.d
