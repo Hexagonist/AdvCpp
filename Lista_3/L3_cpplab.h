@@ -125,8 +125,14 @@ namespace cpplab{
     template<typename T>
     concept having_size = requires (T t){
         {t.size()} -> std::same_as<size_t>;
-    };
-
+    // } && requires (T t, size_t i){
+        {t[0]};
+        requires std::is_arithmetic_v<std::remove_reference_t<decltype(t[0])>>;
+    } ;
+    // && requires std::is_arithmetic_v<std::remove_reference_t<decltype(*std::begin(container))>>;
+    // requires (T t, size_t i){
+    //     { t[i] } -> std::is_arithmetic;
+    // };
     // * operator overloading for cpp::vector and std::vector
     // template<typename T, typename U> 
     auto operator*(having_size auto L_type, having_size auto R_type)

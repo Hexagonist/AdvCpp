@@ -1,6 +1,7 @@
 #include <iostream>
 #include <algorithm>
 #include <vector>
+#include <string>
 
 // Mateusz Wójcicki ISSP sem 5; grupa czwartek 15:15
 
@@ -33,9 +34,30 @@ std::ostream& operator<<(std::ostream& os, const std::vector<T>& vec)
 }
 
 template<typename T>
-std::vector<T> as_sorted_view(std::vector<T> vector)
+std::vector<T*> as_sorted_view(std::vector<T> &vec)
 {
-    std::vector<T> sorted = vector;
-    insertion_sort(sorted);
+    // std::vector<T> sorted = vec;
+    // insertion_sort(sorted);
+    // return sorted;
+
+    std::vector<T*> sorted;
+    for(size_t i = 0; i<vec.size(); i++)
+    {
+        sorted.push_back(&vec[i]);
+        // std::cout<<&vec[i]<<"\n";
+    }
+
+    for(size_t i = 1; i < sorted.size(); i++)
+    {
+        for(size_t j = 0; j < i; j++)
+        {
+            if(*sorted[i] < *sorted[j])   
+            {
+                T* temp = sorted[i];
+                sorted[i] = sorted[j];
+                sorted[j] = temp;
+            }
+        }
+    }
     return sorted;
 }
