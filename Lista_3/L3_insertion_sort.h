@@ -22,24 +22,10 @@ void insertion_sort(std::vector<T>& vec)
     }
 }
 
-// Only to print std::vector in comfortable way
-template<typename T>
-std::ostream& operator<<(std::ostream& os, const std::vector<T>& vec)
-{
-    for (T a : vec)
-    {
-        os << a << " ";
-    }
-    return os;
-}
-
 template<typename T>
 std::vector<T*> as_sorted_view(std::vector<T> &vec)
 {
-    // std::vector<T> sorted = vec;
-    // insertion_sort(sorted);
-    // return sorted;
-
+    // Create vector of pointers to elements of original vector
     std::vector<T*> sorted;
     for(size_t i = 0; i<vec.size(); i++)
     {
@@ -47,6 +33,7 @@ std::vector<T*> as_sorted_view(std::vector<T> &vec)
         // std::cout<<&vec[i]<<"\n";
     }
 
+    // Then insertion-sort vector of pointers by values 
     for(size_t i = 1; i < sorted.size(); i++)
     {
         for(size_t j = 0; j < i; j++)
@@ -60,4 +47,15 @@ std::vector<T*> as_sorted_view(std::vector<T> &vec)
         }
     }
     return sorted;
+}
+
+// Only to print std::vector in comfortable way
+template<typename T>
+std::ostream& operator<<(std::ostream& os, const std::vector<T>& vec)
+{
+    for (T a : vec)
+    {
+        os << a << " ";
+    }
+    return os;
 }
