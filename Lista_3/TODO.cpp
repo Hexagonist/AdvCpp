@@ -9,6 +9,12 @@
 
 To do:
 
+// Wymogi Zad1:
+// zeby byly liczbami zawartosci
+// size rowne
+// byly vectory
+
+
 
 */
 
