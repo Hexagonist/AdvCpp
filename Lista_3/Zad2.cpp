@@ -4,19 +4,13 @@
 
 int main()
 {
-    // std::vector<int> standard_vector({3, 2, 4});
-    // std::cout<<"Standard vector: "<<standard_vector<<"\nSorted:"<<as_sorted_view(standard_vector);
-
-    
-
     std::vector<std::string> v_test = {"zupa", "kura", "jajo", "arbuz", "babilon"};
     auto v_output = as_sorted_view(v_test);
     for (auto& w : v_output)
-        std::cout<<w<<std::endl;
+        std::cout<<*w<<std::endl;
     std::cout<<std::endl;
     for (auto& v : v_test)
         std::cout<<v<<std::endl;
-
 
     return 0;
 }

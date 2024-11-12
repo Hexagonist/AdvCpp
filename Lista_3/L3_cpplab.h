@@ -108,7 +108,7 @@ namespace cpplab{
             // Destructor of the vector 
             ~vector()
             {
-                delete[] begin;
+                // delete[] begin;
                 // std::cout<<"cpplab::vector destroyed!\n";
             }
 
@@ -120,16 +120,17 @@ namespace cpplab{
             using value_type = T; // Type of vector elements
     };
 
-
-    // Check if T has size parameter
     template<typename T>
-    concept having_size = requires (T t){
+    concept multiplicable = requires (T t){
+        // Check if type has size parameter
         {t.size()} -> std::same_as<size_t>;
+        // Check if type is iterable
+        {t[0]};
+        // Check if type's values are numbers
+        requires std::is_arithmetic_v<std::remove_reference_t<decltype(t[0])>>;
     };
-
-    // * operator overloading for cpp::vector and std::vector
-    // template<typename T, typename U> 
-    auto operator*(having_size auto L_type, having_size auto R_type)
+    
+    auto operator*(multiplicable auto L_type, multiplicable auto R_type)
     {
         if(L_type.size() == R_type.size())
         {
