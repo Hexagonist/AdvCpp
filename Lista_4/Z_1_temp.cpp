@@ -24,8 +24,10 @@ namespace cpplab{
             // Copy constructor
             vector(const vector<T> &other) : maxSize(other.maxSize), _size(other._size)
             {
-                begin = new T[maxSize];
+                // begin = new T[maxSize];
+                // std::move(other.begin);
                 begin = std::move(other.begin);
+
             }
 
             // [] Operator overloading to acquire element of vector
@@ -170,5 +172,43 @@ std::ostream& operator<<(std::ostream& os, const std::vector<T>& vec)
         os << a << " ";
     }
     return os;
+}
+
+
+
+
+
+int main() 
+{
+	try
+	{
+	// Testing scalar multiplication
+	std::vector<int> standard_vector_ints({2, 3, 4});
+	cpplab::vector<int> vec_1;
+	vec_1.push_back(1);
+	vec_1.push_back(2);
+	vec_1.push_back(3);
+
+    cpplab::vector<int> vec_2(vec_1);
+
+	std::cout<<"vec_1: \n"<<vec_1;
+    // vec_1.print();
+
+	std::cout<<"\nvec_2: \n"<<vec_2;
+    // vec_2.print();
+    
+    
+	}
+	catch(const std::exception& e)
+	{
+		std::cout << "Exception: " << e.what() << '\n';
+	}
+	catch(...)
+	{
+		std::cout << "Other Exception occured!" << '\n';
+	}
+
+
+	return 0;
 }
 
