@@ -4,7 +4,6 @@
 #include <type_traits>
 #include <concepts>
 
-// Mateusz Wójcicki ISSP sem 5; grupa czwartek 15:15
 
 // Odpowiedz do zad1 The Cherno vector 15:35
 // move assignment operator https://youtu.be/OWNeCTd7yQE?si=tmP63_gxBAEXrfuE&t=650
@@ -15,10 +14,7 @@ namespace cpplab{
     {
         using value_type = T; // Type of vector elements
         
-        private:
-            size_t maxSize; // Max size of vector
-            size_t _size; // Current size of vector
-            T* begin; // Pointer to first element of the vector
+        
 
         public:
             // Default constructor without memory allocation
@@ -27,6 +23,7 @@ namespace cpplab{
             // Copy constructor
             vector(const vector<T> &other) : maxSize(other.maxSize), _size(other._size)
             {
+                std::cout<<"\nCopied";
                 begin = new T[maxSize];
                 for(size_t i = 0; i < _size; i++) begin[i] = other[i];
             }
@@ -34,6 +31,7 @@ namespace cpplab{
             // Move constructor
             vector(const vector<T> &&other) noexcept : maxSize(std::move(other.maxSize)), _size(std::move(other._size))
             {
+                std::cout<<"\nMoved";
                 delete[] begin;
                 begin = new T[maxSize];
                 for(size_t i = 0; i < _size; i++) begin[i] = std::move(other[i]);
@@ -121,35 +119,53 @@ namespace cpplab{
                 return _size == 0;
             }
 
-            // operator=
-            auto operator=(const cpplab::vector<T> &other)
+            // copy operator=
+            cpplab::vector<T>& operator=(const cpplab::vector<T> &other)
             {
+                std::cout<<"\n=Copied";
                 delete[] begin;
                 _size = other._size;
                 maxSize = other.maxSize;
 
                 begin = new T[maxSize];
                 for(size_t i = 0; i < _size; i++) begin[i] = other[i];
+
+                return *this;
             }
 
             // move operator=
-            auto operator=(const cpplab::vector<T> &&other) noexcept
+            cpplab::vector<T>& operator=(cpplab::vector<T> &&other) noexcept
             {
-                delete[] begin;
-                _size = other._size;
-                maxSize = other.maxSize;
+                std::cout<<"\n=Moved";
+                if(this != &other)
+                {
+                    delete[] begin;
+                    _size = other._size;
+                    maxSize = other.maxSize;
 
-                begin = new T[maxSize];
-                // for(size_t i = 0; i < _size; i++) begin[i] = other[i];
-                begin = std::move(other.begin);
+
+                    begin = new T[maxSize];
+                    // for(size_t i = 0; i < _size; i++) begin[i] = other[i];
+                    begin = std::move(other.begin);
+
+                    other._size = 0;
+                    other.maxSize = 0;
+                    other.begin = nullptr;
+                }
+                return *this;
             }
 
             // Destructor of the vector 
             ~vector()
             {
-                // std::cout<<"cpplab::vector destroyed!\n";
+                std::cout<<"\ncpplab::vector destroyed!";
                 delete[] begin;
             }
+
+            private:
+            size_t maxSize; // Max size of vector
+            size_t _size; // Current size of vector
+            T* begin; // Pointer to first element of the vector
     };
 
 };
@@ -215,58 +231,47 @@ int main()
 	try
 	{
 	// Test for copy constructor
-	std::vector<int> standard_vector_ints({2, 3, 4});
 	cpplab::vector<int> vec_1;
 	vec_1.push_back(1);
 	vec_1.push_back(2);
 	vec_1.push_back(3);
 
+	std::cout<<"vec_1: "<<vec_1;
     cpplab::vector<int> vec_2(vec_1);
+	std::cout<<"\nvec_2: "<<vec_2;
 
-
-	std::cout<<"vec_1: \n"<<vec_1;
-
-	std::cout<<"\nvec_2: \n"<<vec_2;
-
-
-    // Test for oprator=
+    // Test for copy operator=
     cpplab::vector<int> vec_3;
 	vec_3.push_back(2);
 	vec_3.push_back(3);
     vec_3.push_back(4);
-	std::cout<<"\n\nvec_3: \n"<<vec_3;
+	std::cout<<"\n\nvec_3: "<<vec_3;
     vec_3 = vec_1;
-	std::cout<<"\nvec_3 after operator=: \n"<<vec_3;
+	std::cout<<"\nvec_3 after operator=: "<<vec_3;
 
     // Test for move constructor
-    // cpplab::vector<int> vec_4;
-	// vec_4.push_back(5);
-	// vec_4.push_back(6);
-    // vec_4.push_back(7);
-    // cpplab::vector<int> vec_5;
-	// std::cout<<"\n\nvec_4: \n"<<vec_4;
-	// std::cout<<"\nvec_5: \n"<<vec_5;
-    // vec_5(std::move(vec_4));
-	// std::cout<<"\nvec_4 after: \n"<<vec_4;
-	// std::cout<<"\nvec_5 after: \n"<<vec_5;
+    cpplab::vector<int> vec_4;
+	vec_4.push_back(5);
+	vec_4.push_back(6);
+    vec_4.push_back(7);
+	std::cout<<"\n\nvec_4: "<<vec_4;
+    cpplab::vector<int> vec_5(std::move(vec_4));
+	std::cout<<"\nvec_5: "<<vec_5;
 
-    // Test for move constructor
+    // Test for move operator=
     cpplab::vector<int> vec_6;
 	vec_6.push_back(5);
 	vec_6.push_back(6);
     vec_6.push_back(7);
     cpplab::vector<int> vec_7;
-	std::cout<<"\n\nvec_6: "<<vec_6;
-	std::cout<<"\nvec_7: "<<vec_7;
-    // vec_7 = std::move(vec_6);
-	std::cout<<"\n\nAfter: ";
+	std::cout<<"\n\nBefore move: ";
 	std::cout<<"\nvec_6: "<<vec_6;
 	std::cout<<"\nvec_7: "<<vec_7;
-
-
-
-    
-    
+    vec_7 = std::move(vec_6);
+	std::cout<<"\nAfter move: ";
+	std::cout<<"\nvec_6: "<<vec_6;
+	std::cout<<"\nvec_7: "<<vec_7;
+    std::cout<<"\n";
 	}
 	catch(const std::exception& e)
 	{

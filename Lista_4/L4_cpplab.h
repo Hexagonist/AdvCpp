@@ -6,16 +6,17 @@
 
 // Mateusz Wójcicki ISSP sem 5; grupa czwartek 15:15
 
+
+// Odpowiedz do zad1 The Cherno vector 15:35
+// move assignment operator https://youtu.be/OWNeCTd7yQE?si=tmP63_gxBAEXrfuE&t=650
+
 namespace cpplab{
     template<typename T> 
     class vector
     {
         using value_type = T; // Type of vector elements
         
-        private:
-            size_t maxSize; // Max size of vector
-            size_t _size; // Current size of vector
-            T* begin; // Pointer to first element of the vector
+        
 
         public:
             // Default constructor without memory allocation
@@ -24,8 +25,18 @@ namespace cpplab{
             // Copy constructor
             vector(const vector<T> &other) : maxSize(other.maxSize), _size(other._size)
             {
+                std::cout<<"\nCopied";
                 begin = new T[maxSize];
-                begin = std::move(other.begin);
+                for(size_t i = 0; i < _size; i++) begin[i] = other[i];
+            }
+
+            // Move constructor
+            vector(const vector<T> &&other) noexcept : maxSize(std::move(other.maxSize)), _size(std::move(other._size))
+            {
+                std::cout<<"\nMoved";
+                delete[] begin;
+                begin = new T[maxSize];
+                for(size_t i = 0; i < _size; i++) begin[i] = std::move(other[i]);
             }
 
             // [] Operator overloading to acquire element of vector
@@ -110,12 +121,53 @@ namespace cpplab{
                 return _size == 0;
             }
 
+            // copy operator=
+            cpplab::vector<T>& operator=(const cpplab::vector<T> &other)
+            {
+                std::cout<<"\n=Copied";
+                delete[] begin;
+                _size = other._size;
+                maxSize = other.maxSize;
+
+                begin = new T[maxSize];
+                for(size_t i = 0; i < _size; i++) begin[i] = other[i];
+
+                return *this;
+            }
+
+            // move operator=
+            cpplab::vector<T>& operator=(cpplab::vector<T> &&other) noexcept
+            {
+                std::cout<<"\n=Moved";
+                if(this != &other)
+                {
+                    delete[] begin;
+                    _size = other._size;
+                    maxSize = other.maxSize;
+
+
+                    begin = new T[maxSize];
+                    // for(size_t i = 0; i < _size; i++) begin[i] = other[i];
+                    begin = std::move(other.begin);
+
+                    other._size = 0;
+                    other.maxSize = 0;
+                    other.begin = nullptr;
+                }
+                return *this;
+            }
+
             // Destructor of the vector 
             ~vector()
             {
-                // std::cout<<"cpplab::vector destroyed!\n";
+                std::cout<<"\ncpplab::vector destroyed!";
                 delete[] begin;
             }
+
+            private:
+            size_t maxSize; // Max size of vector
+            size_t _size; // Current size of vector
+            T* begin; // Pointer to first element of the vector
     };
 
 };
@@ -171,4 +223,3 @@ std::ostream& operator<<(std::ostream& os, const std::vector<T>& vec)
     }
     return os;
 }
-
