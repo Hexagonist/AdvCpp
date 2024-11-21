@@ -6,6 +6,9 @@
 
 // Mateusz Wójcicki ISSP sem 5; grupa czwartek 15:15
 
+// Odpowiedz do zad1 The Cherno vector 15:35
+// move assignment operator https://youtu.be/OWNeCTd7yQE?si=tmP63_gxBAEXrfuE&t=650
+
 namespace cpplab{
     template<typename T> 
     class vector
@@ -24,10 +27,16 @@ namespace cpplab{
             // Copy constructor
             vector(const vector<T> &other) : maxSize(other.maxSize), _size(other._size)
             {
-                // begin = new T[maxSize];
-                // std::move(other.begin);
-                begin = std::move(other.begin);
+                begin = new T[maxSize];
+                for(size_t i = 0; i < _size; i++) begin[i] = other[i];
+            }
 
+            // Move constructor
+            vector(const vector<T> &&other) noexcept : maxSize(std::move(other.maxSize)), _size(std::move(other._size))
+            {
+                delete[] begin;
+                begin = new T[maxSize];
+                for(size_t i = 0; i < _size; i++) begin[i] = std::move(other[i]);
             }
 
             // [] Operator overloading to acquire element of vector
@@ -112,6 +121,29 @@ namespace cpplab{
                 return _size == 0;
             }
 
+            // operator=
+            auto operator=(const cpplab::vector<T> &other)
+            {
+                delete[] begin;
+                _size = other._size;
+                maxSize = other.maxSize;
+
+                begin = new T[maxSize];
+                for(size_t i = 0; i < _size; i++) begin[i] = other[i];
+            }
+
+            // move operator=
+            auto operator=(const cpplab::vector<T> &&other) noexcept
+            {
+                delete[] begin;
+                _size = other._size;
+                maxSize = other.maxSize;
+
+                begin = new T[maxSize];
+                // for(size_t i = 0; i < _size; i++) begin[i] = other[i];
+                begin = std::move(other.begin);
+            }
+
             // Destructor of the vector 
             ~vector()
             {
@@ -182,7 +214,7 @@ int main()
 {
 	try
 	{
-	// Testing scalar multiplication
+	// Test for copy constructor
 	std::vector<int> standard_vector_ints({2, 3, 4});
 	cpplab::vector<int> vec_1;
 	vec_1.push_back(1);
@@ -191,11 +223,48 @@ int main()
 
     cpplab::vector<int> vec_2(vec_1);
 
+
 	std::cout<<"vec_1: \n"<<vec_1;
-    // vec_1.print();
 
 	std::cout<<"\nvec_2: \n"<<vec_2;
-    // vec_2.print();
+
+
+    // Test for oprator=
+    cpplab::vector<int> vec_3;
+	vec_3.push_back(2);
+	vec_3.push_back(3);
+    vec_3.push_back(4);
+	std::cout<<"\n\nvec_3: \n"<<vec_3;
+    vec_3 = vec_1;
+	std::cout<<"\nvec_3 after operator=: \n"<<vec_3;
+
+    // Test for move constructor
+    // cpplab::vector<int> vec_4;
+	// vec_4.push_back(5);
+	// vec_4.push_back(6);
+    // vec_4.push_back(7);
+    // cpplab::vector<int> vec_5;
+	// std::cout<<"\n\nvec_4: \n"<<vec_4;
+	// std::cout<<"\nvec_5: \n"<<vec_5;
+    // vec_5(std::move(vec_4));
+	// std::cout<<"\nvec_4 after: \n"<<vec_4;
+	// std::cout<<"\nvec_5 after: \n"<<vec_5;
+
+    // Test for move constructor
+    cpplab::vector<int> vec_6;
+	vec_6.push_back(5);
+	vec_6.push_back(6);
+    vec_6.push_back(7);
+    cpplab::vector<int> vec_7;
+	std::cout<<"\n\nvec_6: "<<vec_6;
+	std::cout<<"\nvec_7: "<<vec_7;
+    // vec_7 = std::move(vec_6);
+	std::cout<<"\n\nAfter: ";
+	std::cout<<"\nvec_6: "<<vec_6;
+	std::cout<<"\nvec_7: "<<vec_7;
+
+
+
     
     
 	}
