@@ -85,7 +85,6 @@ namespace cpplab{
                 }
             }
 
-            void emplace_back(){}
 
             // Method to create new, bigger vector and copy previous 
             // content into the new one 
@@ -226,6 +225,16 @@ std::ostream& operator<<(std::ostream& os, const std::vector<T>& vec)
 
 
 
+template<typename T>
+void emplace_back(T ...args)
+{
+    for(T x : args)
+    cpplab::vector<T> test(...);
+    // std::cout<<test<<"\n";
+    
+}
+
+
 
 
 int main() 
@@ -240,7 +249,10 @@ int main()
 
 	std::cout<<"vec_1: "<<vec_1;
     cpplab::vector<int> vec_2(vec_1);
-	std::cout<<"\nvec_2: "<<vec_2;
+	std::cout<<"\nvec_2: "<<vec_2<<"\n";
+
+    emplace_back(1, 2, 3);
+    // vec_1.emplace_back(1, 2, 3);
 
     // // Test for copy operator=
     // cpplab::vector<int> vec_3;
