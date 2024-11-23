@@ -29,7 +29,7 @@ namespace cpplab{
             }
 
             // Move constructor
-            vector(const vector<T> &&other) noexcept : maxSize(std::move(other.maxSize)), _size(std::move(other._size))
+            vector(vector<T> &&other) noexcept : maxSize(std::move(other.maxSize)), _size(std::move(other._size))
             {
                 std::cout<<"\nMoved";
                 delete[] begin;
@@ -69,6 +69,35 @@ namespace cpplab{
                 {
                     throw std::runtime_error("cpplab::vector push_back error!");
                 }
+            }
+
+            template<typename... Args>
+            T& emplace_back(Args&&... args)
+            {
+                // Memory allocation if begin pointer doesn't "exist" yet
+                if(empty())
+                {
+                    resize(1);
+                    begin[_size] = T(std::forward<Args>(args)...);
+                    _size++;
+                }
+                else if(_size < maxSize)
+                {
+                    begin[_size] = T(std::forward<Args>(args)...);
+                    _size++;
+                }
+                else if (_size == maxSize)
+                {
+                    resize(maxSize + 1);
+                    begin[_size] = T(std::forward<Args>(args)...);
+                    _size++;
+                }
+                else 
+                {
+                    throw std::runtime_error("cpplab::vector emplace_back error!");
+                }   
+                
+                return begin[_size];
             }
 
             // Method to delete element at the end of the vector 
@@ -225,15 +254,31 @@ std::ostream& operator<<(std::ostream& os, const std::vector<T>& vec)
 
 
 
-template<typename T>
-void emplace_back(T ...args)
+struct pixel
 {
-    for(T x : args)
-    cpplab::vector<T> test(...);
-    // std::cout<<test<<"\n";
-    
-}
+    int r;
+    int g;
+    int b;
 
+    // default constructor
+    pixel() : r(0), g(0), b(0)
+    {
+        // std::cout<<"pixel default constructed!\n"; 
+    }
+
+    // move constructor
+    pixel(int &&r, int &&g, int &&b) : r(std::move(r)), g(std::move(g)), b(std::move(b)) 
+    {
+        // std::cout<<"pixel move constructed!\n";
+    }
+};
+
+// << overload for pixel struct
+std::ostream& operator<<(std::ostream& os, const pixel& pix)
+{
+    os <<"("<<pix.r<<", "<<pix.g<<", "<<pix.b<<")";   
+    return os;
+}
 
 
 
@@ -243,15 +288,33 @@ int main()
 	{
 	// Test for copy constructor
 	cpplab::vector<int> vec_1;
-	vec_1.push_back(1);
-	vec_1.push_back(2);
-	vec_1.push_back(3);
+	// vec_1.push_back(1);
+	// vec_1.push_back(2);
+	// vec_1.push_back(3);
 
-	std::cout<<"vec_1: "<<vec_1;
-    cpplab::vector<int> vec_2(vec_1);
-	std::cout<<"\nvec_2: "<<vec_2<<"\n";
+	// std::cout<<"vec_1: "<<vec_1;
+    // cpplab::vector<int> vec_2(vec_1);
+	// std::cout<<"\nvec_2: "<<vec_2<<"\n";
+    
 
-    emplace_back(1, 2, 3);
+    cpplab::vector<pixel> vec_pixels;
+	vec_pixels.push_back(pixel(1, 2, 3));
+	vec_pixels.push_back(pixel(2, 3, 4));
+	vec_pixels.push_back(pixel(3, 4, 5));
+	std::cout<<"vec_pixels before: "<<vec_pixels<<"\n";
+
+
+    vec_pixels.emplace_back(1, 2, 3);
+	std::cout<<"vec_pixels after: "<<vec_pixels;
+    // for(size_t i=0; i<vec_pixels.size(); i++)
+    // {
+    //     vec_pixels[i].print();
+    // }
+
+    // cpplab::vector<int> vec_2(vec_pixels);
+	// std::cout<<"\nvec_2: "<<vec_2<<"\n";
+
+    // emplace_back(1, 2, 3);
     // vec_1.emplace_back(1, 2, 3);
 
     // // Test for copy operator=
