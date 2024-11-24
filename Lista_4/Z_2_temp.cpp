@@ -5,17 +5,16 @@
 #include <concepts>
 
 
-// Odpowiedz do zad1 The Cherno vector 15:35
-// move assignment operator https://youtu.be/OWNeCTd7yQE?si=tmP63_gxBAEXrfuE&t=650
+// Dlaczego nie używać memcpy?
+// Ponieważ memcpy działa w przypadku gdy klasa posiada prymitywne typy danych
+// np. int, float. W przypadku obiektów innych klas musimy upewnić się, że zostaną
+// wywołane odpowiednie kostruktory tych klas - dlatego używamy std::move.
 
 namespace cpplab{
     template<typename T> 
     class vector
     {
         using value_type = T; // Type of vector elements
-        
-        
-
         public:
             // Default constructor without memory allocation
             vector() : maxSize(0), _size(0), begin(nullptr) {}
@@ -35,6 +34,10 @@ namespace cpplab{
                 delete[] begin;
                 begin = new T[maxSize];
                 for(size_t i = 0; i < _size; i++) begin[i] = std::move(other[i]);
+
+                other._size = 0;
+                other.maxSize = 0;
+                delete[] other.begin;
             }
 
             // [] Operator overloading to acquire element of vector
@@ -44,7 +47,7 @@ namespace cpplab{
             }
 
             // Method to append new element at the end of the vector 
-            void push_back(T val)
+            void push_back(const T &val)
             {
                 // Memory allocation if begin pointer doesn't "exist" yet
                 if(empty())
@@ -69,6 +72,7 @@ namespace cpplab{
                 {
                     throw std::runtime_error("cpplab::vector push_back error!");
                 }
+                // std::cout<<"push_back\n";
             }
 
             template<typename... Args>
@@ -78,18 +82,26 @@ namespace cpplab{
                 if(empty())
                 {
                     resize(1);
-                    begin[_size] = T(std::forward<Args>(args)...);
+
+                    // Forward created T object to allocated heap memory 
+                    // exactly at adress &begin[_size]
+                    new(&begin[_size]) T(std::forward<Args>(args)...);
+                    // Worse version which creates temp on stack, and then moving 
+                    // to memory on heap:
+                    // begin[_size] = T(std::forward<Args>(args)...);
                     _size++;
                 }
                 else if(_size < maxSize)
                 {
-                    begin[_size] = T(std::forward<Args>(args)...);
+                    new(&begin[_size]) T(std::forward<Args>(args)...);
+                    // begin[_size] = T(std::forward<Args>(args)...);
                     _size++;
                 }
                 else if (_size == maxSize)
                 {
                     resize(maxSize + 1);
-                    begin[_size] = T(std::forward<Args>(args)...);
+                    new(&begin[_size]) T(std::forward<Args>(args)...);
+                    // begin[_size] = T(std::forward<Args>(args)...);
                     _size++;
                 }
                 else 
@@ -173,7 +185,6 @@ namespace cpplab{
                     _size = other._size;
                     maxSize = other.maxSize;
 
-
                     begin = new T[maxSize];
                     // for(size_t i = 0; i < _size; i++) begin[i] = other[i];
                     begin = std::move(other.begin);
@@ -188,8 +199,10 @@ namespace cpplab{
             // Destructor of the vector 
             ~vector()
             {
-                std::cout<<"\ncpplab::vector destroyed!";
+                _size = 0;
+                maxSize = 0;
                 delete[] begin;
+                std::cout<<"\ncpplab::vector destroyed!";
             }
 
             private:
@@ -263,13 +276,18 @@ struct pixel
     // default constructor
     pixel() : r(0), g(0), b(0)
     {
-        // std::cout<<"pixel default constructed!\n"; 
+        // std::cout<<"pixel constructed by default!\n"; 
     }
 
     // move constructor
-    pixel(int &&r, int &&g, int &&b) : r(std::move(r)), g(std::move(g)), b(std::move(b)) 
+    pixel(int &&r, int &&g, int &&b) noexcept : r(std::move(r)), g(std::move(g)), b(std::move(b)) 
     {
-        // std::cout<<"pixel move constructed!\n";
+        // std::cout<<"pixel constructed by move!\n";
+    }
+
+    ~pixel() 
+    {
+        // std::cout<<"pixel destroyed!\n";
     }
 };
 
@@ -286,17 +304,61 @@ int main()
 {
 	try
 	{
+    
+    std::cout<<"\nZadanie 1:\n";
+
 	// Test for copy constructor
 	cpplab::vector<int> vec_1;
-	// vec_1.push_back(1);
-	// vec_1.push_back(2);
-	// vec_1.push_back(3);
+	vec_1.push_back(1);
+	vec_1.push_back(2);
+	vec_1.push_back(3);
 
-	// std::cout<<"vec_1: "<<vec_1;
-    // cpplab::vector<int> vec_2(vec_1);
-	// std::cout<<"\nvec_2: "<<vec_2<<"\n";
-    
+	std::cout<<"vec_1: "<<vec_1;
+    cpplab::vector<int> vec_1copy(vec_1);
+	std::cout<<"\nvec_1copy: "<<vec_1copy<<"\n";
 
+    // Test for copy operator=
+    cpplab::vector<int> vec_3;
+	vec_3.push_back(2);
+	vec_3.push_back(3);
+    vec_3.push_back(4);
+	std::cout<<"\nvec_3: "<<vec_3;
+    vec_3 = vec_1;
+	std::cout<<"\nvec_3 after vec_3=vec_1: "<<vec_3<<"\n";
+
+    // Test for move constructor
+    cpplab::vector<int> vec_4;
+	vec_4.push_back(5);
+	vec_4.push_back(6);
+    vec_4.push_back(7);
+	std::cout<<"\nvec_4: "<<vec_4;
+    cpplab::vector<int> vec_4dest(std::move(vec_4));
+	std::cout<<"\nvec_4: "<<vec_4;
+	std::cout<<"\nvec_4dest: "<<vec_4dest<<"\n";
+
+
+    // Test for move operator=
+    cpplab::vector<int> vec_6;
+	vec_6.push_back(5);
+	vec_6.push_back(6);
+    vec_6.push_back(7);
+    cpplab::vector<int> vec_7;
+	std::cout<<"\n\nBefore move: ";
+	std::cout<<"\nvec_6: "<<vec_6;
+	std::cout<<"\nvec_7: "<<vec_7;
+    vec_7 = std::move(vec_6);
+	std::cout<<"\nAfter move: ";
+	std::cout<<"\nvec_6: "<<vec_6;
+	std::cout<<"\nvec_7: "<<vec_7;
+
+    std::cout<<"\n\nDlaczego nie używać memcpy?\n";
+    std::cout<<"Ponieważ memcpy działa w przypadku gdy klasa posiada prymitywne typy danych\n";
+    std::cout<<"np. int, float. W przypadku obiektów innych klas musimy upewnić się, że zostaną\n";
+    std::cout<<"wywołane odpowiednie kostruktory tych klas - dlatego używamy std::move.\n";
+
+
+    // Zadanie 2
+    std::cout<<"\nZadanie 2:\n";
     cpplab::vector<pixel> vec_pixels;
 	vec_pixels.push_back(pixel(1, 2, 3));
 	vec_pixels.push_back(pixel(2, 3, 4));
@@ -305,50 +367,7 @@ int main()
 
 
     vec_pixels.emplace_back(1, 2, 3);
-	std::cout<<"vec_pixels after: "<<vec_pixels;
-    // for(size_t i=0; i<vec_pixels.size(); i++)
-    // {
-    //     vec_pixels[i].print();
-    // }
-
-    // cpplab::vector<int> vec_2(vec_pixels);
-	// std::cout<<"\nvec_2: "<<vec_2<<"\n";
-
-    // emplace_back(1, 2, 3);
-    // vec_1.emplace_back(1, 2, 3);
-
-    // // Test for copy operator=
-    // cpplab::vector<int> vec_3;
-	// vec_3.push_back(2);
-	// vec_3.push_back(3);
-    // vec_3.push_back(4);
-	// std::cout<<"\n\nvec_3: "<<vec_3;
-    // vec_3 = vec_1;
-	// std::cout<<"\nvec_3 after operator=: "<<vec_3;
-
-    // // Test for move constructor
-    // cpplab::vector<int> vec_4;
-	// vec_4.push_back(5);
-	// vec_4.push_back(6);
-    // vec_4.push_back(7);
-	// std::cout<<"\n\nvec_4: "<<vec_4;
-    // cpplab::vector<int> vec_5(std::move(vec_4));
-	// std::cout<<"\nvec_5: "<<vec_5;
-
-    // // Test for move operator=
-    // cpplab::vector<int> vec_6;
-	// vec_6.push_back(5);
-	// vec_6.push_back(6);
-    // vec_6.push_back(7);
-    // cpplab::vector<int> vec_7;
-	// std::cout<<"\n\nBefore move: ";
-	// std::cout<<"\nvec_6: "<<vec_6;
-	// std::cout<<"\nvec_7: "<<vec_7;
-    // vec_7 = std::move(vec_6);
-	// std::cout<<"\nAfter move: ";
-	// std::cout<<"\nvec_6: "<<vec_6;
-	// std::cout<<"\nvec_7: "<<vec_7;
-    // std::cout<<"\n";
+	std::cout<<"vec_pixels after: "<<vec_pixels<<"\n";
 	}
 	catch(const std::exception& e)
 	{
