@@ -6,18 +6,16 @@
 
 // Mateusz Wójcicki ISSP sem 5; grupa czwartek 15:15
 
-
-// Odpowiedz do zad1 The Cherno vector 15:35
-// move assignment operator https://youtu.be/OWNeCTd7yQE?si=tmP63_gxBAEXrfuE&t=650
+// Dlaczego nie używać memcpy?
+// Ponieważ memcpy działa w przypadku gdy klasa posiada prymitywne typy danych
+// np. int, float. W przypadku obiektów innych klas musimy upewnić się, że zostaną
+// wywołane odpowiednie kostruktory tych klas - dlatego używamy std::move.
 
 namespace cpplab{
     template<typename T> 
     class vector
     {
         using value_type = T; // Type of vector elements
-        
-        
-
         public:
             // Default constructor without memory allocation
             vector() : maxSize(0), _size(0), begin(nullptr) {}
@@ -31,12 +29,16 @@ namespace cpplab{
             }
 
             // Move constructor
-            vector(const vector<T> &&other) noexcept : maxSize(std::move(other.maxSize)), _size(std::move(other._size))
+            vector(vector<T> &&other) noexcept : maxSize(std::move(other.maxSize)), _size(std::move(other._size))
             {
                 std::cout<<"\nMoved";
                 delete[] begin;
                 begin = new T[maxSize];
                 for(size_t i = 0; i < _size; i++) begin[i] = std::move(other[i]);
+
+                other._size = 0;
+                other.maxSize = 0;
+                delete[] other.begin;
             }
 
             // [] Operator overloading to acquire element of vector
@@ -46,7 +48,7 @@ namespace cpplab{
             }
 
             // Method to append new element at the end of the vector 
-            void push_back(T val)
+            void push_back(const T &val)
             {
                 // Memory allocation if begin pointer doesn't "exist" yet
                 if(empty())
@@ -71,6 +73,44 @@ namespace cpplab{
                 {
                     throw std::runtime_error("cpplab::vector push_back error!");
                 }
+                // std::cout<<"push_back\n";
+            }
+
+            template<typename... Args>
+            T& emplace_back(Args&&... args)
+            {
+                // Memory allocation if begin pointer doesn't "exist" yet
+                if(empty())
+                {
+                    resize(1);
+
+                    // Forward created T object to allocated heap memory 
+                    // exactly at adress &begin[_size]
+                    new(&begin[_size]) T(std::forward<Args>(args)...);
+                    // Worse version which creates temp on stack, and then moving 
+                    // to memory on heap:
+                    // begin[_size] = T(std::forward<Args>(args)...);
+                    _size++;
+                }
+                else if(_size < maxSize)
+                {
+                    new(&begin[_size]) T(std::forward<Args>(args)...);
+                    // begin[_size] = T(std::forward<Args>(args)...);
+                    _size++;
+                }
+                else if (_size == maxSize)
+                {
+                    resize(maxSize + 1);
+                    new(&begin[_size]) T(std::forward<Args>(args)...);
+                    // begin[_size] = T(std::forward<Args>(args)...);
+                    _size++;
+                }
+                else 
+                {
+                    throw std::runtime_error("cpplab::vector emplace_back error!");
+                }   
+                
+                return begin[_size];
             }
 
             // Method to delete element at the end of the vector 
@@ -86,6 +126,7 @@ namespace cpplab{
                     throw std::runtime_error("cpplab::vector pop_back error!");
                 }
             }
+
 
             // Method to create new, bigger vector and copy previous 
             // content into the new one 
@@ -145,7 +186,6 @@ namespace cpplab{
                     _size = other._size;
                     maxSize = other.maxSize;
 
-
                     begin = new T[maxSize];
                     // for(size_t i = 0; i < _size; i++) begin[i] = other[i];
                     begin = std::move(other.begin);
@@ -160,8 +200,10 @@ namespace cpplab{
             // Destructor of the vector 
             ~vector()
             {
-                std::cout<<"\ncpplab::vector destroyed!";
+                _size = 0;
+                maxSize = 0;
                 delete[] begin;
+                std::cout<<"\ncpplab::vector destroyed!";
             }
 
             private:
