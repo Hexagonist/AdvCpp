@@ -5,7 +5,7 @@
 
 int main()
 {
-    Forward_list<int> just_1(1);
+    BST<int> just_1(1);
     std::cout<<"\nBefore reverse: \n";
     just_1.print();
     just_1.reverse();
@@ -14,7 +14,7 @@ int main()
     std::cout<<std::endl;
 
 
-    Forward_list<int> five_ints;
+    BST<int> five_ints;
     for(int i = 1; i<=5; i++)
     {
         five_ints.insertAtHead(i);
@@ -27,7 +27,7 @@ int main()
     std::cout<<std::endl;
 
 
-    Forward_list<std::string> five_strings;
+    BST<std::string> five_strings;
     std::vector<std::string> v_test = {"zupa", "kura", "jajo", "arbuz", "babilon"};
     for(auto& x : v_test)
     {

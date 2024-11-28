@@ -33,7 +33,7 @@ namespace cpplab{
             {
                 std::cout<<"\nMoved";
                 delete[] begin;
-                begin = new T[maxSize];
+                // begin = new T[maxSize];
                 for(size_t i = 0; i < _size; i++) begin[i] = std::move(other[i]);
 
                 other._size = 0;
