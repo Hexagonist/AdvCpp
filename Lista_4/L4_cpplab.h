@@ -32,8 +32,7 @@ namespace cpplab{
             vector(vector<T> &&other) noexcept : maxSize(std::move(other.maxSize)), _size(std::move(other._size))
             {
                 std::cout<<"\nMoved";
-                delete[] begin;
-                // begin = new T[maxSize];
+                begin = new T[maxSize];
                 for(size_t i = 0; i < _size; i++) begin[i] = std::move(other[i]);
 
                 other._size = 0;
