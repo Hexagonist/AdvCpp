@@ -20,8 +20,8 @@ class BST
 
     void insert(T n)
     {
-        if(root == nullptr) root = std::make_unique<Node>(n);
-        else root->insert(n);
+        if(root) root->insert(n);
+        else root = std::make_unique<Node>(n);
     }
 
     
@@ -34,13 +34,14 @@ class BST
     struct Node
     {
         T key;
-        std::unique_ptr<Node> parent;
+        std::shared_ptr<Node> parent;
         std::unique_ptr<Node> left;
         std::unique_ptr<Node> right;
 
         Node(T val)
         {
             this->key = val;
+            this->parent = nullptr;
             this->left = nullptr;
             this->right = nullptr;
         }
@@ -49,21 +50,21 @@ class BST
         {
             if(n < key)
             {
-                if(left==nullptr) left = std::make_unique<Node>(n);
-                else left->insert(n);
+                if(left) left->insert(n);
+                else left = std::make_unique<Node>(n);
             }
             else 
             {
-                if(right==nullptr) right = std::make_unique<Node>(n);
-                else right->insert(n);
+                if(right) right->insert(n);
+                else right = std::make_unique<Node>(n);
             }
         }  
 
         void print()
         {
-            if(left != nullptr) left->print();
+            if(left) left->print();
             std::cout<<key<<"\n";
-            if(right != nullptr) right->print();
+            if(right) right->print();
         //     if(next != nullptr) next->print();
         }
     };
