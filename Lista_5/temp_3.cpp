@@ -63,7 +63,7 @@ class BST
         void print()
         {
             if(left) left->print();
-            std::cout<<key<<"\n";
+            std::cout<<key<<"   ";
             if(right) right->print();
         //     if(next != nullptr) next->print();
         }

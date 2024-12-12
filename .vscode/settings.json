@@ -56,6 +56,13 @@
         "numeric": "cpp",
         "random": "cpp",
         "fstream": "cpp",
-        "sstream": "cpp"
+        "sstream": "cpp",
+        "charconv": "cpp",
+        "format": "cpp",
+        "locale": "cpp",
+        "xlocbuf": "cpp",
+        "xlocmes": "cpp",
+        "xlocmon": "cpp",
+        "xloctime": "cpp"
     }
 }
