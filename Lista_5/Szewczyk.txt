@@ -1,0 +1,3 @@
+N- liczba skarbów
+W - max waga skarbów jakie Dratewka
+może wziąść
