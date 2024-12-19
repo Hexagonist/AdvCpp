@@ -96,10 +96,34 @@ int main()
 
 
     int *test = new int(8);
-    cpplab::unique_ptr<int> my_unique_2(test);
+    cpplab::unique_ptr<int> my_unique_2(std::move(test));
     std::cout<<"\nmy_unique_2 = "<<my_unique_2.get()<<"\n"<<*my_unique_2<<"\n";
     std::cout<<"*test = "<<test<<"\n"<<*test<<"\n";
 
 
+    pixel *test_pixel = new pixel(1, 2, 3); 
+    std::cout<<test_pixel->r<<"  "<<test_pixel->g<<"  "<<test_pixel->b<<"\n";
+
+    cpplab::unique_ptr<pixel> my_unique_pixel(test_pixel);
+
+    std::cout<<test_pixel->r<<"  "<<test_pixel->g<<"  "<<test_pixel->b<<"\n";
+    std::cout<<my_unique_pixel->r<<"  "<<my_unique_pixel->g<<"  "<<my_unique_pixel->b<<"\n";
+    std::cout<<"unique: "<<my_unique_pixel.get()<<"\n"<<"standard_ptr: "<<test_pixel<<"\n";
+
+
+    int *temp  = new int(7);
+    std::unique_ptr<int> standard_unique(std::move(temp));
+    delete temp;
+    int *temp_2 = standard_unique.get();
+
+    std::cout<<temp<<"\n"<<standard_unique<<"\n"<<temp_2<<"\n";
+
+    int *temp_3 = new int(9);
+    // std::unique_ptr<int> standard_unique_proper = std::make_unique(temp_3);
+
+
+    // jeśli chcesz unique pointer to trzeba go stworzyć uzywajac std::move
+
 	return 0;
 }
+
