@@ -2,6 +2,7 @@
 #include <memory>
 #include <string>
 #include <vector>
+#include <utility>
 
 namespace cpplab{
     template<typename T>
@@ -10,25 +11,43 @@ namespace cpplab{
         using value_type = T;
 
         public:
-        unique_ptr() : adress(nullptr) {}
-        unique_ptr(T value) : adress(&value) {}
+        constexpr void reset()
+        {
+            delete data;
+            data = nullptr;
+        }
+
+        constexpr unique_ptr() = default;
+        // unique_ptr(T value) : adress(&value) {}
+        constexpr unique_ptr(T* data_) : data(data_) {}
+
+        // Move 
+        constexpr unique_ptr(unique_ptr &&other) : data(std::exchange(other.data, nullptr)) {}
+        constexpr unique_ptr &operator=(unique_ptr &&other)
+        {
+            if(data)    {reset();}
+            data = std::exchange(other.data, nullptr);
+        }
+
+        // copy operations deleted
+        unique_ptr(const unique_ptr &) = delete;
+        unique_ptr &operator=(const unique_ptr &) = delete; 
+
+        
 
         T* get() const 
-        {return adress;}
+        {return data;}
 
         T operator*() const
-        {return *adress;}
+        {return *data;}
 
         T* operator->() const
-        {return adress;}
+        {return data;}
 
-        // ~unique_ptr()
-        // {
-        //     // delete adress;
-        // }
+        constexpr ~unique_ptr()   {reset();}
 
         private:
-        T* adress;
+        T* data;
     };
 }
 
@@ -61,16 +80,25 @@ struct pixel
 int main() 
 {
     std::cout<<"\nZadanie 2:\n";
-    std::string str = "I am a string";
+    // std::string str = "I am a string";
     // std::unique_ptr<std::string> standard_ptr = std::make_unique(str);
-    std::string  *standard_ptr = &str;
+    // std::string  *standard_ptr = &str;
 
-    cpplab::unique_ptr<std::string> str_ptr = cpplab::unique_ptr<std::string>(str);
-    std::cout<<str_ptr.get()<<"\n";
-    std::cout<<*str_ptr<<"\n";
-    std::cout<<str_ptr->size()<<"\n";
-    std::cout<<standard_ptr->size()<<"\n";
+    // cpplab::unique_ptr<std::string> str_ptr = cpplab::unique_ptr<std::string>(str);
+    // std::cout<<str_ptr.get()<<"\n";
+    // std::cout<<*str_ptr<<"\n";
+    // std::cout<<str_ptr->size()<<"\n";
+    // std::cout<<standard_ptr->size()<<"\n";
+    
+    // int a = 5;
+    cpplab::unique_ptr<int> my_unique_1(new int(5));
+    std::cout<<my_unique_1.get()<<"\n"<<*my_unique_1<<"\n";
 
+
+    int *test = new int(8);
+    cpplab::unique_ptr<int> my_unique_2(test);
+    std::cout<<"\nmy_unique_2 = "<<my_unique_2.get()<<"\n"<<*my_unique_2<<"\n";
+    std::cout<<"*test = "<<test<<"\n"<<*test<<"\n";
 
 
 	return 0;
