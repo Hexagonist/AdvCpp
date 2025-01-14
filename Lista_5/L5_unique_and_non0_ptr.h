@@ -7,6 +7,8 @@
 #include <stdexcept>
 #include <concepts>
 
+// Mateusz Wójcicki ISSP sem 5; grupa czwartek 15:15
+
 namespace cpplab{
     template<typename T>
     class unique_ptr
@@ -148,7 +150,7 @@ public:
     }
 
     // Accessors
-    decltype(auto) operator*() const {
+    T operator*() const {
         return *ptr;
     }
 
