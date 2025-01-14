@@ -1,3 +1,4 @@
+#pragma once
 #include <iostream>
 #include <memory>
 #include <string>
@@ -21,54 +22,10 @@ class BST
 
     void insert(T n)
     {
-        if (root == nullptr)
-        {
-            root = new Node{.left = nullptr, .right = nullptr, .parent = nullptr, .key = n};
-            // return root;
-        }
-        if (n < root->key)
-        {
-            auto tmp = insert(root->left, n);
-            if (tmp == root->left)
-                root->left->parent = root;
-            // return root->left;
-        }
-        auto tmp = insert(root->right, n);
-        if (tmp == root->right)
-            root->right->parent = root;
-        // return root->right;    
-    }   
+        if(root) root->insert(n);
+        else root = std::make_unique<Node>(n);
+    }
 
-    // void reverse()
-    // {
-    //     if(head->next != nullptr)
-    //     {
-    //         // Make head Node's next ptr = nullptr (Now it is last element of linked list)
-    //         std::unique_ptr<Node> temp = std::move(head);
-    //         head = std::move(temp->next);
-    //         temp->next = nullptr;
-
-    //         // Then reverse whole list by moving head and 
-    //         // changing pointers accordingly until while statement is reached
-    //         while(head->next != nullptr)
-    //         {
-    //             std::unique_ptr<Node> temp_2 = std::move(temp);
-    //             temp = std::move(head);
-    //             head = std::move(temp->next);
-    //             temp->next = std::move(temp_2);
-    //         }
-
-    //         // Head is now at the end of previous list
-    //         // Change head's next pointer from nullptr to appropriate one
-    //         head->next = std::move(temp);
-    //     }
-    // }
-
-    // void print()
-    // {
-    //     head->print();
-    // }
-    
     void print_in_order()
     {
         root->print();
@@ -78,26 +35,38 @@ class BST
     struct Node
     {
         T key;
-        std::unique_ptr<Node> parent;
+        std::shared_ptr<Node> parent;
         std::unique_ptr<Node> left;
         std::unique_ptr<Node> right;
 
         Node(T val)
         {
             this->key = val;
+            this->parent = nullptr;
             this->left = nullptr;
             this->right = nullptr;
-            // this->next = nullptr;
-            // std::cout<<"Node created!\n";
-            // std::cout<<"added: "<<val<<"\n";
         }
+
+        void insert(T n)
+        {
+            if(n < key)
+            {
+                if(left) left->insert(n);
+                else left = std::make_unique<Node>(n);
+            }
+            else 
+            {
+                if(right) right->insert(n);
+                else right = std::make_unique<Node>(n);
+            }
+        }  
 
         void print()
         {
-        //     std::cout<<key<<"\t";
-        //     if(next != nullptr) next->print();
+            if(left) left->print();
+            std::cout<<key<<"   ";
+            if(right) right->print();
         }
     };
-    
     std::unique_ptr<Node> root;
 };
