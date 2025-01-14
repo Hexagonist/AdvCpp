@@ -6,15 +6,15 @@
 // Mateusz Wójcicki ISSP sem 5; grupa czwartek 15:15
 
 template<typename T>
-class Forward_list
+class BST
 {
     public:
-    Forward_list(T new_val)
+    BST(T new_val)
     {
         this->head = std::make_unique<Node>(new_val);
     }
 
-    Forward_list()
+    BST()
     {
         this->head = nullptr;
     }

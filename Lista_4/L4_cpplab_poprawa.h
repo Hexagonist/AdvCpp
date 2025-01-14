@@ -32,12 +32,11 @@ namespace cpplab{
             vector(vector<T> &&other) noexcept : maxSize(std::move(other.maxSize)), _size(std::move(other._size))
             {
                 std::cout<<"\nMoved";
-                begin = new T[maxSize];
-                for(size_t i = 0; i < _size; i++) begin[i] = std::move(other[i]);
+                begin = other.begin;
 
                 other._size = 0;
                 other.maxSize = 0;
-                delete[] other.begin;
+                other.begin = nullptr;
             }
 
             // [] Operator overloading to acquire element of vector
@@ -185,8 +184,6 @@ namespace cpplab{
                     _size = other._size;
                     maxSize = other.maxSize;
 
-                    begin = new T[maxSize];
-                    // for(size_t i = 0; i < _size; i++) begin[i] = other[i];
                     begin = std::move(other.begin);
 
                     other._size = 0;
@@ -262,5 +259,45 @@ std::ostream& operator<<(std::ostream& os, const std::vector<T>& vec)
     {
         os << a << " ";
     }
+    return os;
+}
+
+// #include "L4_cpplab.h"
+
+// Mateusz Wójcicki ISSP sem 5; grupa czwartek 15:15
+
+// Dlaczego nie używać memcpy?
+// Ponieważ memcpy działa w przypadku gdy klasa posiada prymitywne typy danych
+// np. int, float. W przypadku obiektów innych klas musimy upewnić się, że zostaną
+// wywołane odpowiednie kostruktory tych klas - dlatego używamy std::move.
+
+struct pixel
+{
+    int r;
+    int g;
+    int b;
+
+    // default constructor
+    pixel() : r(0), g(0), b(0)
+    {
+        // std::cout<<"pixel constructed by default!\n"; 
+    }
+
+    // move constructor
+    pixel(int &&r, int &&g, int &&b) noexcept : r(std::move(r)), g(std::move(g)), b(std::move(b)) 
+    {
+        // std::cout<<"pixel constructed by move!\n";
+    }
+
+    ~pixel() 
+    {
+        // std::cout<<"pixel destroyed!\n";
+    }
+};
+
+// << overload for pixel struct
+std::ostream& operator<<(std::ostream& os, const pixel& pix)
+{
+    os <<"("<<pix.r<<", "<<pix.g<<", "<<pix.b<<")";   
     return os;
 }
