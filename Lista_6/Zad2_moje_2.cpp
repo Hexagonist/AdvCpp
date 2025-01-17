@@ -1,40 +1,41 @@
 #include <iostream>
 #include <vector>
+#include <queue>
 #include <thread>
 #include <functional>
 #include <mutex>
 #include <condition_variable>
+#include <atomic>
+#include <numeric>
 
-// Mateusz Wójcicki ISSP sem 5; grupa czwartek 15:15
 
 class thread_pool
 {
     using Task = std::function<double()>;
 
     private:
-    int thread_num; // number of threads
-    std::vector<std::thread> threads; // our workers :)
+    int thread_num;
+    std::vector<std::thread> threads;
     std::vector<Task> tasks;
-    std::vector<double> results; // results of finished tasks
-    std::mutex mTasks;
+    std::vector<double> results;
+    std::mutex mTask;
     std::mutex mResults;
     std::condition_variable mCondVar;
     bool stop_flag;
 
-
     public:
+
     thread_pool(int num) : thread_num(num), stop_flag(false)
     {
         for(auto i = 0; i < num; i++)
         {
             threads.emplace_back([this]
             {
-                // lambda to create body of every thread - our workers
                 while(true)
                 {
                     Task current_task;
                     {
-                        std::unique_lock<std::mutex> lock(mTasks);
+                        std::unique_lock<std::mutex> lock(mTask);
                         mCondVar.wait(lock, [this]{return stop_flag || !tasks.empty();});
                         if(stop_flag && tasks.empty())   
                             break;
@@ -49,14 +50,18 @@ class thread_pool
                         results.push_back(result);
                     }
                 }
+                stop();
             });
         }
     }
 
+
+
+
     void add_task(Task task)
     {
         {
-            std::lock_guard<std::mutex> lock(mTasks);
+            std::lock_guard lock(mTask);
             tasks.emplace_back(std::move(task));
         }
         mCondVar.notify_one();
@@ -65,30 +70,25 @@ class thread_pool
     double average()
     {
         std::lock_guard<std::mutex> lock(mResults);
-        double avg = 0.0;
+        double sum = 0.0;
 
-        if(!results.empty())
-        {
-            for(auto result : results)
-            avg += result;
+        for(auto result : results)
+        sum += result;
 
-            avg /= results.size();
-        }
-        return avg;
+        return sum / results.size();
     }
 
     void stop()
     {
         {
-            std::lock_guard<std::mutex> lock(mTasks);
+            std::lock_guard<std::mutex> lock(mTask);
             stop_flag = true;
         }
 
-        mCondVar.notify_all(); // Wake up all threads
+        mCondVar.notify_all();
         for(auto &thread : threads)
         {
-            // Check if they are done with work and only then join them
-            if(thread.joinable()) thread.join(); 
+            if(thread.joinable()) thread.join();
         }
     }
 
@@ -96,6 +96,8 @@ class thread_pool
     {
         stop();
     }
+
+
 };
 
 int main()
@@ -110,10 +112,9 @@ int main()
         });
     }
 
-    test_pool.stop();
-
     std::cout<<"average = "<<test_pool.average();
 
+    test_pool.stop();
 
     return 0;
 }
