@@ -1,0 +1,36 @@
+L6 Zad1
+
+- generator?
+mt19937 stands for mersenne twister with a long period of 2^219937 – 1
+ which means mt19937 produces a sequence of 32-bit integers that 
+ only repeats itself after 2^219937 – 1 number have been generated.
+
+- std::sort
+- std::thread
+- std::ref
+- .join()
+
+- is_sorted()
+- inplace_merge()
+
+
+L6 Zad2
+
+- using
+- std::function<>
+- std::mutex
+- std::condition_variable
+waiting by releasing mutex
+
+- std::unique_lock
+can have different locking 
+strategies ex. std::defer_lock doesnt lock on construction
+used in condition variable
+
+- std::lock_guard
+very light wrapper for mutex
+automatically removes block while goes out of scope
+cannot explicitly unlock lock_guard
+cannot copy lock_guard
+
+- notify_all()
