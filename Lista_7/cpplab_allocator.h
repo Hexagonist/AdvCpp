@@ -10,28 +10,28 @@ namespace cpplab {
 template<typename T>
 class allocator {
 public:
-    // Alias type for type to allocate
+    // Alias type for the type to allocate
     using value_type = T;
 
-    // Domyślny konstruktor i destruktor (bezstanowy obiekt)
+    // Default constructor and destructor (stateless object)
     allocator() noexcept = default;
     ~allocator() noexcept = default;
 
-    // Metoda alokująca pamięć dla n elementów typu T
+    // Method to allocate memory for n elements of type T
     T* allocate(std::size_t n) {
         if (n == 0) {
             return nullptr;
         }
-        // Rzutowanie alokowanej pamięci na typ T*
+        // Cast allocated memory to type T*
         return static_cast<T*>(::operator new(n * sizeof(T)));
     }
 
-    // Metoda zwalniająca pamięć wskazaną przez p
+    // Method to deallocate memory pointed to by p
     void deallocate(T* p, std::size_t n) noexcept {
         if (p == nullptr) {
             return;
         }
-        // Zwalnianie pamięci za pomocą operatora placement delete
+        // Deallocate memory using placement delete
         ::operator delete(p, n * sizeof(T));
     }
 };
