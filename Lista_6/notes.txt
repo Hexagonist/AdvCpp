@@ -13,6 +13,8 @@ mt19937 stands for mersenne twister with a long period of 2^219937 – 1
 - is_sorted()
 - inplace_merge()
 
+*Pytanie o std::ref do chata
+
 
 L6 Zad2
 
@@ -34,3 +36,5 @@ cannot explicitly unlock lock_guard
 cannot copy lock_guard
 
 - notify_all()
+
+https://www.youtube.com/results?search_query=the%20cherno%20thread%20pool
