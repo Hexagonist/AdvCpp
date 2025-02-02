@@ -1,0 +1,3 @@
+
+Zad 1
+- zapewnić bezpieczeństwo w przypadku wielu wątków
