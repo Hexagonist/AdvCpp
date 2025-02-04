@@ -1,0 +1,4 @@
+
+Zad 1
+- zapewnić bezpieczeństwo w przypadku wielu wątków
+- zmienić .a na .lib
