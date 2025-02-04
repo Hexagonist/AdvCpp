@@ -2,6 +2,8 @@
 #include <iostream>
 using namespace std;
 
+// rozwiazanie listy w folderze wyslij i test_z_...._2 w Zad2.cpp komentarz
+
 int main()
 {
     int a = 10;
